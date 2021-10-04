@@ -1,4 +1,5 @@
 const express = require("express");
+const { ApolloServer } = require("apollo-server-express");
 const path = require("path");
 const db = require("./config/connection");
 
@@ -6,7 +7,7 @@ const db = require("./config/connection");
 // const routes = require('./routes');
 
 //  Implement the ApolloServer / GraphQL
-const { ApolloServer } = require("apollo-server-express");
+
 const { typeDefs, resolvers } = require("./schemas");
 
 const app = express();
@@ -37,5 +38,8 @@ app.get("*", (req, res) => {
 });
 
 db.once("open", () => {
-  app.listen(PORT, () => console.log(`🌍 Now listening on localhost:${PORT}`));
+  app.listen(PORT, () => {
+    console.log(`🌍 Now listening on localhost:${PORT}`);
+    console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`);
+  });
 });
