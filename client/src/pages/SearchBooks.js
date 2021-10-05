@@ -13,7 +13,7 @@ import Auth from "../utils/auth";
 import { saveBook, searchGoogleBooks } from "../utils/API";
 import { saveBookIds, getSavedBookIds } from "../utils/localStorage";
 import { useQuery, useMutation } from "@apollo/client";
-import { SAVE_BOOK } from "../utils/queries";
+import { SAVE_BOOK } from "../utils/mutations";
 
 const SearchBooks = () => {
   // create state for holding returned google api data
@@ -77,7 +77,7 @@ const SearchBooks = () => {
       return false;
     }
     // Use the Apollo useMutation() Hook to execute the SAVE_BOOK mutation in the handleSaveBook() function instead of the saveBook() function imported from the API file.
-    const [saveBook, { data, error }] = useMutation(SAVE_BOOK);
+    const [saveBook, { error }] = useMutation(SAVE_BOOK);
 
     try {
       const { data } = await saveBook({
