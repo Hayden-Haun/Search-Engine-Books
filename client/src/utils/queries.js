@@ -5,7 +5,9 @@ export const GET_ME = gql`
     me(userId: $userId) {
       _id
       username
-      savedBooks
+      savedBooks {
+        bookId
+      }
     }
   }
 `;
