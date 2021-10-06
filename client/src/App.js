@@ -17,6 +17,20 @@ import SearchBooks from "./pages/SearchBooks";
 import SavedBooks from "./pages/SavedBooks";
 import Navbar from "./components/Navbar";
 
+// const client = new ApolloClient({
+//   request: (operation) => {
+//     const token = localStorage.getItem("id_token");
+
+//     operation.setContext({
+//       headers: {
+//         authorization: token ? `${token}` : "",
+//       },
+//     });
+//   },
+//   uri: `/graphql`,
+//   cache: new InMemoryCache(),
+// });
+
 const httpLink = createHttpLink({
   uri: "/graphql",
 });
@@ -25,6 +39,7 @@ const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
   const token = localStorage.getItem("id_token");
   // return the headers to the context so httpLink can read them
+  console.log(token);
   return {
     headers: {
       ...headers,
@@ -32,7 +47,6 @@ const authLink = setContext((_, { headers }) => {
     },
   };
 });
-
 const client = new ApolloClient({
   // Set up our client to execute the `authLink` middleware prior to making the request to our GraphQL API
   link: authLink.concat(httpLink),
