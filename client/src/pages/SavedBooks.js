@@ -13,10 +13,26 @@ import { GET_ME } from "../utils/queries";
 import { REMOVE_BOOK } from "../utils/mutations";
 
 const SavedBooks = () => {
-  const { loading, data } = useQuery(GET_ME);
+  //pulled error from useQuery, renamed to meError to not conflict with the useMutation error definition.
+
+  // push in userId to the GET_ME Query
+  const {
+    loading,
+    data,
+    error: meError,
+  } = useQuery(GET_ME, {
+    variables: { userId: Auth.getProfile().data._id },
+  });
   const [removeBook, { error }] = useMutation(REMOVE_BOOK);
 
   const userData = data?.me || [];
+
+  // console.log(Auth.getProfile());
+
+  //need to stringify error to view
+  if (meError) {
+    console.log(JSON.stringify(meError));
+  }
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -60,6 +76,7 @@ const SavedBooks = () => {
         </h2>
         <CardColumns>
           {userData.savedBooks.map((book) => {
+            console.log(book);
             return (
               <Card key={book.bookId} border="dark">
                 {book.image ? (
