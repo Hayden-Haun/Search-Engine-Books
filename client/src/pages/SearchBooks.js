@@ -78,10 +78,13 @@ const SearchBooks = () => {
       return false;
     }
 
+    console.log("this is working");
     try {
       const { data } = await saveBook({
-        varaibles: { input: bookToSave },
+        varaibles: { bookData: bookToSave },
       });
+
+      console.log(data);
 
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
@@ -89,7 +92,6 @@ const SearchBooks = () => {
       console.error(err);
     }
   };
-
   return (
     <>
       <Jumbotron fluid className="text-light bg-dark">
