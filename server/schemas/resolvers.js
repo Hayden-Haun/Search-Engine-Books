@@ -54,13 +54,35 @@ const resolvers = {
 
       throw new AuthenticationError("You need to be logged in!");
     },
-    deleteBook: async (parent, { userId, bookId }) => {
+
+    removeBook: async (parent, { bookId }, context) => {
       return User.findOneAndUpdate(
-        { _id: userId },
-        { $pull: { savedBooks: bookId } },
+        { _id: context.user._id },
+        { $pull: { savedBooks: { bookId } } },
         { new: true }
       );
     },
+
+    removeBook: async (parent, { bookId }, context) => {
+      console.log("REMOVE BOOK WORKING!!!!");
+      if (context.user) {
+        const updatedUser = await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $pull: { savedBooks: { bookId } } },
+          { new: true }
+        );
+
+        return updatedUser;
+      }
+    },
+
+    // removeComment: async (parent, { thoughtId, commentId }) => {
+    //   return Thought.findOneAndUpdate(
+    //     { _id: thoughtId },
+    //     { $pull: { comments: { _id: commentId } } },
+    //     { new: true }
+    //   );
+    // },
   },
 };
 
